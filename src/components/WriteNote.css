@@ -128,6 +128,30 @@
   }
 }
 
+/* Font selector - subtle, integrated */
+.write-note__font-select {
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  font-family: 'Kalam', cursive;
+  font-size: 0.8rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.write-note__font-select:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.write-note__font-select:focus {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
 /* Submit button - subtle, not a CTA */
 .write-note__submit {
   display: flex;

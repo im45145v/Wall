@@ -8,8 +8,8 @@ import './AdminPanel.css';
  * Allows viewing, editing, and deleting notes
  * Password-protected but simple
  */
-function AdminPanel({ notes, onNoteDeleted, onNoteUpdated }) {
-  const [isOpen, setIsOpen] = useState(false);
+function AdminPanel({ notes, onNoteDeleted, onNoteUpdated, isFullPage = false }) {
+  const [isOpen, setIsOpen] = useState(isFullPage ? true : false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [editingNote, setEditingNote] = useState(null);
@@ -67,33 +67,37 @@ function AdminPanel({ notes, onNoteDeleted, onNoteUpdated }) {
   };
 
   return (
-    <div className="admin-panel">
-      <button
-        className="admin-panel__toggle"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Admin panel"
-        title="Admin panel"
-      >
-        <svg className="admin-panel__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-        <span className="admin-panel__label">Admin</span>
-      </button>
+    <div className={`admin-panel ${isFullPage ? 'admin-panel--full-page' : ''}`}>
+      {!isFullPage && (
+        <button
+          className="admin-panel__toggle"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Admin panel"
+          title="Admin panel"
+        >
+          <svg className="admin-panel__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="admin-panel__label">Admin</span>
+        </button>
+      )}
 
       {isOpen && (
         <>
-          <div className="admin-panel__backdrop" onClick={() => setIsOpen(false)} />
-          <div className="admin-panel__panel">
-            <div className="admin-panel__header">
-              <h3 className="admin-panel__title">Admin Panel</h3>
-              <button
-                className="admin-panel__close"
-                onClick={() => setIsOpen(false)}
-                aria-label="Close"
-              >
-                ×
-              </button>
-            </div>
+          {!isFullPage && <div className="admin-panel__backdrop" onClick={() => setIsOpen(false)} />}
+          <div className={`admin-panel__panel ${isFullPage ? 'admin-panel__panel--full' : ''}`}>
+            {!isFullPage && (
+              <div className="admin-panel__header">
+                <h3 className="admin-panel__title">Admin Panel</h3>
+                <button
+                  className="admin-panel__close"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+              </div>
+            )}
             
             {!isAuthenticated ? (
               <form className="admin-panel__auth" onSubmit={handleAuth}>

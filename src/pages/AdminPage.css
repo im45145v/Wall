@@ -1,0 +1,73 @@
+/**
+ * AdminPage Styles
+ * 
+ * Full-page admin interface styling
+ */
+
+.admin-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 24px;
+}
+
+.admin-page__header {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 2px solid rgba(139, 115, 85, 0.2);
+}
+
+.admin-page__title {
+  font-family: var(--font-handwritten);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.admin-page__back-btn {
+  padding: 10px 20px;
+  background: var(--color-text);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-casual);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-page__back-btn:hover {
+  background: #5a5046;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-page__loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-family: var(--font-casual);
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+}
+
+.admin-page__content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .admin-page__header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .admin-page__title {
+    font-size: 2rem;
+  }
+}

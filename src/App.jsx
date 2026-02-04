@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import WriteNote from './components/WriteNote';
 import WallCanvas from './components/WallCanvas';
-import FontSwitcher from './components/FontSwitcher';
-import AdminPanel from './components/AdminPanel';
 import { fetchNotes, createNote } from './services/api';
 import './App.css';
 
@@ -43,22 +42,13 @@ function App() {
     }
   };
 
-  const handleNoteDeleted = (noteId) => {
-    setNotes(prev => prev.filter(note => note.id !== noteId));
-  };
-
-  const handleNoteUpdated = (updatedNote) => {
-    setNotes(prev => prev.map(note => 
-      note.id === updatedNote.id ? updatedNote : note
-    ));
-  };
-
   return (
     <div className="app">
       {/* Page header - personal, branded */}
       <header className="app__header">
         <h1 className="app__title">Ashish's Wall</h1>
         <p className="app__subtitle">A personal space for thoughts and memories</p>
+        <Link to="/admin" className="app__admin-link">Admin</Link>
       </header>
 
       {/* Writing area - this IS a note */}
@@ -87,14 +77,6 @@ function App() {
           <p>A personal space, lovingly maintained</p>
         </div>
       </footer>
-
-      {/* Floating controls */}
-      <FontSwitcher />
-      <AdminPanel 
-        notes={notes} 
-        onNoteDeleted={handleNoteDeleted}
-        onNoteUpdated={handleNoteUpdated}
-      />
     </div>
   );
 }

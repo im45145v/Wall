@@ -11,6 +11,11 @@
   z-index: 1000;
 }
 
+.admin-panel--full-page {
+  position: static;
+  z-index: auto;
+}
+
 .admin-panel__toggle {
   display: flex;
   align-items: center;
@@ -73,6 +78,16 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
+}
+
+.admin-panel__panel--full {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 8px;
+  animation: none;
 }
 
 .admin-panel__header {

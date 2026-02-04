@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    const { message, name } = req.body;
+    const { message, name, font } = req.body;
     
     if (!message || !message.trim()) {
       return res.status(400).json({ error: 'Message is required' });
@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
     const note = new Note({
       message: message.trim(),
       name: name?.trim() || 'Anonymous',
+      font: font?.trim() || 'Caveat',
     });
     
     await note.save();
@@ -68,18 +69,25 @@ router.delete('/:id', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   try {
-    const { message, name } = req.body;
+    const { message, name, font } = req.body;
     
     if (!message || !message.trim()) {
       return res.status(400).json({ error: 'Message is required' });
     }
     
+    const updateData = {
+      message: message.trim(),
+      name: name?.trim() || 'Anonymous',
+    };
+    
+    // Only update font if provided
+    if (font) {
+      updateData.font = font.trim();
+    }
+    
     const note = await Note.findByIdAndUpdate(
       req.params.id,
-      {
-        message: message.trim(),
-        name: name?.trim() || 'Anonymous',
-      },
+      updateData,
       { new: true, runValidators: true }
     );
     

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { randomPick, noteColors } from '../utils/randomness';
+import { fontOptions } from '../utils/fonts';
 import './WriteNote.css';
 
 /**
@@ -12,6 +13,7 @@ import './WriteNote.css';
 function WriteNote({ onSubmit }) {
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
+  const [font, setFont] = useState('Caveat');
   const [isFocused, setIsFocused] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [noteColor] = useState(() => randomPick(noteColors));
@@ -36,11 +38,13 @@ function WriteNote({ onSubmit }) {
     await onSubmit({
       message: message.trim(),
       name: name.trim() || 'Anonymous',
+      font: font,
     });
     
     // Reset after placing note
     setMessage('');
     setName('');
+    setFont('Caveat');
     setIsSubmitting(false);
     
     // Gentle blur to show the note was placed
@@ -76,7 +80,7 @@ function WriteNote({ onSubmit }) {
           aria-label="Your thought"
         />
         
-        {/* Footer with name and submit */}
+        {/* Footer with name, font selection and submit */}
         <div className="write-note__footer">
           <span className="write-note__dash">—</span>
           <input
@@ -89,6 +93,26 @@ function WriteNote({ onSubmit }) {
             onBlur={() => setIsFocused(false)}
             maxLength={50}
             aria-label="Your name (optional)"
+          />
+          
+          <select
+            className="write-note__font-select"
+            value={font}
+            onChange={(e) => setFont(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            aria-label="Choose font"
+          >
+            {fontOptions.map((fontOption) => (
+              <option 
+                key={fontOption.name} 
+                value={fontOption.name}
+                style={{ fontFamily: fontOption.family }}
+              >
+                {fontOption.name}
+              </option>
+            ))}
+          </select>
           />
           
           <button 
