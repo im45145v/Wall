@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { getNoteStyle } from '../utils/randomness';
+import { getFontFamily } from '../utils/fonts';
 import './NoteCard.css';
 
 /**
@@ -8,6 +9,7 @@ import './NoteCard.css';
  * Each note is a physical object, not a data row.
  * It has texture, slight imperfection, and presence.
  * The design evokes handwritten notes on real paper.
+ * Each note can have its own font style.
  */
 function NoteCard({ note }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +17,9 @@ function NoteCard({ note }) {
   
   // Get consistent random styling based on note ID
   const style = getNoteStyle(note.id);
+  
+  // Get font family for this note
+  const fontFamily = getFontFamily(note.font || 'Caveat');
   
   // Staggered entrance animation
   useEffect(() => {
@@ -53,12 +58,21 @@ function NoteCard({ note }) {
       }}
       aria-label={`Note from ${note.name || 'Anonymous'}`}
     >
-      {/* Subtle tape decoration - only on some notes */}
+      {/* Decorative elements - distributed randomly based on note properties */}
       {style.rotation > 0.5 && (
         <div className="note-card__tape" aria-hidden="true" />
       )}
+      {style.rotation < -0.5 && (
+        <div className="note-card__pin" aria-hidden="true" />
+      )}
+      {style.offsetY > 4 && (
+        <div className="note-card__fold" aria-hidden="true" />
+      )}
+      {style.offsetY < -4 && style.rotation > 0 && (
+        <div className="note-card__clip" aria-hidden="true" />
+      )}
       
-      <p className="note-card__message">{note.message}</p>
+      <p className="note-card__message" style={{ fontFamily }}>{note.message}</p>
       
       <footer className="note-card__footer">
         <span className="note-card__author">

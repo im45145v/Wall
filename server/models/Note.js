@@ -21,6 +21,12 @@ const noteSchema = new mongoose.Schema({
     maxlength: [50, 'Name cannot exceed 50 characters'],
     default: 'Anonymous',
   },
+  font: {
+    type: String,
+    trim: true,
+    maxlength: [100, 'Font name cannot exceed 100 characters'],
+    default: 'Caveat',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

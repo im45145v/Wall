@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    const { message, name } = req.body;
+    const { message, name, font } = req.body;
     
     if (!message || !message.trim()) {
       return res.status(400).json({ error: 'Message is required' });
@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
     const note = new Note({
       message: message.trim(),
       name: name?.trim() || 'Anonymous',
+      font: font?.trim() || 'Caveat',
     });
     
     await note.save();
@@ -59,6 +60,48 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     console.error('Error deleting note:', error);
     res.status(500).json({ error: 'Failed to delete note' });
+  }
+});
+
+/**
+ * PUT /api/notes/:id
+ * Update a note on the wall
+ */
+router.put('/:id', async (req, res) => {
+  try {
+    const { message, name, font } = req.body;
+    
+    if (!message || !message.trim()) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+    
+    const updateData = {
+      message: message.trim(),
+      name: name?.trim() || 'Anonymous',
+    };
+    
+    // Only update font if provided
+    if (font) {
+      updateData.font = font.trim();
+    }
+    
+    const note = await Note.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+    
+    if (!note) {
+      return res.status(404).json({ error: 'Note not found' });
+    }
+    
+    res.json(note);
+  } catch (error) {
+    console.error('Error updating note:', error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ error: error.message });
+    }
+    res.status(500).json({ error: 'Failed to update note' });
   }
 });
 
