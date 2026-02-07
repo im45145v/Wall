@@ -22,26 +22,30 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-// CORS configuration - Allow GitHub Codespaces and localhost
+// CORS configuration - Allow GitHub Codespaces, localhost, and Render domains
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
     
-    // Allow localhost and GitHub Codespaces
+    // Allow localhost, GitHub Codespaces, and Render domains
     const allowedPatterns = [
       /^http:\/\/localhost:\d+$/,
       /^https:\/\/.*\.app\.github\.dev$/,
-      /^https:\/\/.*\.githubpreview\.dev$/
+      /^https:\/\/.*\.githubpreview\.dev$/,
+      /^https:\/\/.*\.onrender\.com$/
     ];
     
     const isAllowed = allowedPatterns.some(pattern => pattern.test(origin));
     
     if (isAllowed) {
       callback(null, true);
+    } else if (process.env.NODE_ENV === 'development') {
+      // Allow all origins in development
+      callback(null, true);
     } else {
       console.warn('CORS blocked origin:', origin);
-      callback(null, true); // Allow anyway for development
+      callback(new Error('CORS policy violation'));
     }
   },
   credentials: true,
