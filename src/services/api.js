@@ -12,8 +12,15 @@ function getApiBaseUrl() {
     return import.meta.env.VITE_API_URL;
   }
   
-  // Auto-detect GitHub Codespaces
+  // Auto-detect based on current domain
   const currentUrl = window.location.href;
+  
+  // Production domains - use Render backend
+  if (currentUrl.includes('wall-hazel.vercel.app') || currentUrl.includes('wall.im45145v.dev')) {
+    return 'https://wall-qwuk.onrender.com/api';
+  }
+  
+  // GitHub Codespaces
   if (currentUrl.includes('.app.github.dev')) {
     // Replace port 5173 with 3001 for backend
     const backendUrl = currentUrl.replace('-5173.app.github.dev', '-3001.app.github.dev');
@@ -21,7 +28,7 @@ function getApiBaseUrl() {
     return `${url.protocol}//${url.host}/api`;
   }
   
-  // Default to localhost
+  // Default to localhost for development
   return 'http://localhost:3001/api';
 }
 

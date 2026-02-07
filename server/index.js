@@ -34,7 +34,8 @@ const corsOptions = {
       /^https:\/\/.*\.app\.github\.dev$/,
       /^https:\/\/.*\.githubpreview\.dev$/,
       /^https:\/\/.*\.onrender\.com$/,
-      /^https:\/\/.*\.vercel\.app$/
+      /^https:\/\/.*\.vercel\.app$/,
+      /^https:\/\/wall\.im45145v\.dev$/ // Custom domain
     ];
     
     const isAllowed = allowedPatterns.some(pattern => pattern.test(origin));
