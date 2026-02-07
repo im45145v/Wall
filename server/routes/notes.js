@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
     const notes = await Note.find().sort({ createdAt: -1 });
     res.json(notes);
   } catch (error) {
-    console.error('Error fetching notes:', error);
     res.status(500).json({ error: 'Failed to fetch notes' });
   }
 });
@@ -38,7 +37,6 @@ router.post('/', async (req, res) => {
     await note.save();
     res.status(201).json(note);
   } catch (error) {
-    console.error('Error creating note:', error);
     if (error.name === 'ValidationError') {
       return res.status(400).json({ error: error.message });
     }
@@ -58,7 +56,6 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Note removed' });
   } catch (error) {
-    console.error('Error deleting note:', error);
     res.status(500).json({ error: 'Failed to delete note' });
   }
 });
@@ -97,7 +94,6 @@ router.put('/:id', async (req, res) => {
     
     res.json(note);
   } catch (error) {
-    console.error('Error updating note:', error);
     if (error.name === 'ValidationError') {
       return res.status(400).json({ error: error.message });
     }

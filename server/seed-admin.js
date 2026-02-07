@@ -31,10 +31,10 @@ async function seedAdmin() {
       console.log('✓ Admin user created successfully!');
     }
 
-    console.log('\nAdmin credentials:');
+    console.log('\n✓ Admin credentials configured');
     console.log('Username: admin');
-    console.log('Password:', DEFAULT_PASSWORD);
-    console.log('\n⚠️  Change the ADMIN_PASSWORD in .env for production!\n');
+    console.log('Password: [Check ADMIN_PASSWORD in .env or use default]');
+    console.log('\n⚠️  IMPORTANT: Change the ADMIN_PASSWORD in .env for production!\n');
 
     await mongoose.connection.close();
     process.exit(0);

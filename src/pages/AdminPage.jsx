@@ -20,7 +20,7 @@ function AdminPage() {
         const loadedNotes = await fetchNotes();
         setNotes(loadedNotes);
       } catch (error) {
-        console.error('Failed to load notes:', error);
+        // Failed to load notes
       } finally {
         setIsLoading(false);
       }

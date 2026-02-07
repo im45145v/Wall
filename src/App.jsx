@@ -24,7 +24,7 @@ function App() {
         const loadedNotes = await fetchNotes();
         setNotes(loadedNotes);
       } catch (error) {
-        console.error('Failed to load notes:', error);
+        // Failed to load notes - will show empty state
       } finally {
         setIsLoading(false);
       }
@@ -38,7 +38,7 @@ function App() {
       // Add to beginning so newest notes appear first
       setNotes(prev => [newNote, ...prev]);
     } catch (error) {
-      console.error('Failed to create note:', error);
+      // Note creation failed - user can try again
     }
   };
 

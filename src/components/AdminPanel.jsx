@@ -17,6 +17,8 @@ function AdminPanel({ notes, onNoteDeleted, onNoteUpdated, isFullPage = false })
   const [editingNote, setEditingNote] = useState(null);
   const [editMessage, setEditMessage] = useState('');
   const [editName, setEditName] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
   
   // Authenticate with backend
   const handleAuth = async (e) => {
@@ -39,15 +41,23 @@ function AdminPanel({ notes, onNoteDeleted, onNoteUpdated, isFullPage = false })
   };
 
   const handleDelete = async (noteId) => {
-    if (!confirm('Are you sure you want to delete this note?')) return;
+    setDeleteConfirm(noteId);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm) return;
     
     try {
-      await deleteNote(noteId);
-      onNoteDeleted(noteId);
+      await deleteNote(deleteConfirm);
+      onNoteDeleted(deleteConfirm);
+      setDeleteConfirm(null);
     } catch (error) {
-      console.error('Failed to delete note:', error);
-      alert('Failed to delete note');
+      setErrorMessage('Failed to delete note. Please try again.');
     }
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirm(null);
   };
 
   const handleEdit = (note) => {
@@ -64,9 +74,9 @@ function AdminPanel({ notes, onNoteDeleted, onNoteUpdated, isFullPage = false })
       });
       onNoteUpdated(updated);
       setEditingNote(null);
+      setErrorMessage('');
     } catch (error) {
-      console.error('Failed to update note:', error);
-      alert('Failed to update note');
+      setErrorMessage('Failed to update note. Please try again.');
     }
   };
 
@@ -138,6 +148,34 @@ function AdminPanel({ notes, onNoteDeleted, onNoteUpdated, isFullPage = false })
               </form>
             ) : (
               <div className="admin-panel__content">
+                {errorMessage && (
+                  <div className="admin-panel__error-message">
+                    ⚠️ {errorMessage}
+                  </div>
+                )}
+
+                {deleteConfirm && (
+                  <div className="admin-panel__confirm-dialog">
+                    <p className="admin-panel__confirm-text">
+                      Are you sure you want to delete this note?
+                    </p>
+                    <div className="admin-panel__confirm-actions">
+                      <button
+                        className="admin-panel__btn admin-panel__btn--delete"
+                        onClick={confirmDelete}
+                      >
+                        Yes, Delete
+                      </button>
+                      <button
+                        className="admin-panel__btn admin-panel__btn--cancel"
+                        onClick={cancelDelete}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="admin-panel__stats">
                   <div className="admin-panel__stat">
                     <span className="admin-panel__stat-number">{notes.length}</span>

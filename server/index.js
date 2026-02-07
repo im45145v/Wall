@@ -45,7 +45,6 @@ const corsOptions = {
       // Allow all origins in development
       callback(null, true);
     } else {
-      console.warn('CORS blocked origin:', origin);
       callback(new Error('CORS policy violation'));
     }
   },
@@ -93,7 +92,6 @@ app.post('/api/admin/auth', async (req, res) => {
       res.status(401).json({ success: false, error: 'Invalid password' });
     }
   } catch (error) {
-    console.error('Auth error:', error);
     res.status(500).json({ 
       success: false, 
       error: 'Authentication error' 

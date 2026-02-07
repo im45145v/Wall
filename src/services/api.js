@@ -26,7 +26,7 @@ function getApiBaseUrl() {
 }
 
 const API_BASE_URL = getApiBaseUrl();
-console.log('API Base URL:', API_BASE_URL);
+// API Base URL configured based on environment
 
 /**
  * Fetch all notes from the server
@@ -40,8 +40,7 @@ export async function fetchNotes() {
     }
     return await response.json();
   } catch (error) {
-    console.warn('API unavailable, falling back to localStorage:', error.message);
-    // Fallback to localStorage
+    // Fallback to localStorage when API is unavailable
     const saved = localStorage.getItem('wall-notes');
     return saved ? JSON.parse(saved) : [];
   }
@@ -67,8 +66,7 @@ export async function createNote(noteData) {
     
     return await response.json();
   } catch (error) {
-    console.warn('API unavailable, falling back to localStorage:', error.message);
-    // Fallback: create note locally
+    // Fallback: create note locally when API is unavailable
     const newNote = {
       id: `note-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
       message: noteData.message,
@@ -101,8 +99,7 @@ export async function deleteNote(noteId) {
     
     return true;
   } catch (error) {
-    console.warn('API unavailable:', error.message);
-    // Fallback: delete from localStorage
+    // Fallback: delete from localStorage when API is unavailable
     const saved = localStorage.getItem('wall-notes');
     if (saved) {
       const notes = JSON.parse(saved).filter(n => n.id !== noteId);
@@ -131,8 +128,7 @@ export async function updateNote(noteId, noteData) {
     
     return await response.json();
   } catch (error) {
-    console.warn('API unavailable:', error.message);
-    // Fallback: update in localStorage
+    // Fallback: update in localStorage when API is unavailable
     const saved = localStorage.getItem('wall-notes');
     if (saved) {
       const notes = JSON.parse(saved);
@@ -152,7 +148,6 @@ export async function updateNote(noteId, noteData) {
  */
 export async function authenticateAdmin(password) {
   try {
-    console.log('Authenticating with:', API_BASE_URL);
     const response = await fetch(`${API_BASE_URL}/admin/auth`, {
       method: 'POST',
       headers: {
@@ -169,7 +164,6 @@ export async function authenticateAdmin(password) {
     const data = await response.json();
     return data.success;
   } catch (error) {
-    console.error('Admin authentication error:', error);
     // Provide user-friendly error messages
     if (error.message.includes('Failed to fetch')) {
       throw new Error('Cannot connect to server. Please check if the backend is running.');
