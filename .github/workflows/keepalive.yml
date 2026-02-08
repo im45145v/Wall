@@ -1,8 +1,8 @@
-name: Keep Render Backend Awake for Wall app
+name: Keep Render Backend Awake
 
 on:
   schedule:
-    - cron: "*/13 * * * *"
+    - cron: "*/14 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -11,4 +11,4 @@ jobs:
 
     steps:
       - name: Ping backend health endpoint
-        run: curl -s https://wall-qwuk.onrender.com/api/health
+        run: curl -s -o /dev/null -w "%{http_code}" https://wall-qwuk.onrender.com/api/health
