@@ -16,7 +16,7 @@ function getApiBaseUrl() {
   const currentUrl = window.location.href;
   
   // Production domains - use Render backend
-  if (currentUrl.includes('wall-hazel.vercel.app') || currentUrl.includes('wall.im45145v.dev')) {
+  if (currentUrl.includes('wall-hazel.vercel.app') || currentUrl.includes('wall.im45145v.com')) {
     return 'https://wall-qwuk.onrender.com/api';
   }
   
